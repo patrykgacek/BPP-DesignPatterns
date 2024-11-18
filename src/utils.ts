@@ -1,4 +1,4 @@
-import { LibraryCatalog, type Book } from "./libraryCatalog";
+import { LibraryCatalog, type Book } from "./LibraryCatalog";
 
 export const addNewBook = (book: Book) => {
   console.log(`Adding book: ${book.title}`);

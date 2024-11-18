@@ -1,4 +1,4 @@
-import { Book } from "./libraryCatalog";
+import { Book } from "./LibraryCatalog";
 import { addNewBook, printBooks } from "./utils";
 
 // 1. Create a Singleton class and demonstrate how to access it from different parts of the program.

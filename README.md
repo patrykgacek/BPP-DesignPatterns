@@ -1,4 +1,8 @@
-# dpp-zadaniewp
+# BPP - Design Patterns
+
+## Guide
+
+`src/index.ts` - The main file containing the solutions to the tasks.
 
 To install dependencies:
 

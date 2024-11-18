@@ -1,9 +1,9 @@
 {
-  "name": "dpp-zadaniewp",
+  "name": "bpp-designpatterns",
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "dev": "bun run index.ts"
+    "dev": "bun run src/index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"

@@ -1,6 +1,3 @@
-// Singleton - LibraryCatalog
-// One instance of LibraryCatalog is created and used throughout the application
-
 export class Book {
   constructor(public title: string, public author: string) {}
 
