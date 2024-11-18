@@ -1,3 +1,5 @@
+import { XMLParser } from "fast-xml-parser";
+
 export class Book {
   constructor(public title: string, public author: string) {}
 
@@ -30,6 +32,50 @@ export class LibraryCatalog {
   printBooks() {
     for (const [idx, book] of this.books.entries()) {
       console.log(`${idx + 1}. ${book.toString()}`);
+    }
+  }
+
+  import(jsonData: string) {
+    const data = JSON.parse(jsonData);
+    for (const item of data) {
+      this.addBook(new Book(item.title, item.author));
+    }
+  }
+}
+
+interface BookDataAdapter {
+  import(data: string): void;
+}
+
+export class CsvBookAdapter implements BookDataAdapter {
+  private catalog: LibraryCatalog;
+
+  constructor(catalog: LibraryCatalog) {
+    this.catalog = catalog;
+  }
+
+  import(csvData: string) {
+    const data = csvData.split("\n").slice(1);
+    for (const item of data) {
+      const [title, author] = item.split(",");
+      this.catalog.addBook(new Book(title, author));
+    }
+  }
+}
+
+export class XmlBookAdapter implements BookDataAdapter {
+  private catalog: LibraryCatalog;
+
+  constructor(catalog: LibraryCatalog) {
+    this.catalog = catalog;
+  }
+
+  import(xmlData: string) {
+    const parser = new XMLParser();
+    const jObj = parser.parse(xmlData);
+    const books = jObj.books.book;
+    for (const book of books) {
+      this.catalog.addBook(new Book(book.title, book.author));
     }
   }
 }
