@@ -1,81 +1,82 @@
-import { XMLParser } from "fast-xml-parser";
+import { XMLParser } from 'fast-xml-parser'
 
 export class Book {
-  constructor(public title: string, public author: string) {}
+  constructor(
+    public title: string,
+    public author: string
+  ) {}
 
   toString() {
-    return `${this.title} by ${this.author}`;
+    return `${this.title} by ${this.author}`
   }
 }
 
 export class LibraryCatalog {
-  private static instance: LibraryCatalog;
-  private books: Book[] = [];
+  private static instance: LibraryCatalog
+  private books: Book[] = []
 
   private constructor() {}
 
   static getInstance(): LibraryCatalog {
     if (!LibraryCatalog.instance) {
-      LibraryCatalog.instance = new LibraryCatalog();
+      LibraryCatalog.instance = new LibraryCatalog()
     }
-    return LibraryCatalog.instance;
+    return LibraryCatalog.instance
   }
 
   sayHi() {
-    console.log("Hi");
+    console.log('Hi')
   }
 
   addBook(book: Book) {
-    this.books.push(book);
+    this.books.push(book)
   }
 
   printBooks() {
-    for (const [idx, book] of this.books.entries()) {
-      console.log(`${idx + 1}. ${book.toString()}`);
-    }
+    console.table(this.books)
   }
 
   import(jsonData: string) {
-    const data = JSON.parse(jsonData);
+    const data = JSON.parse(jsonData)
     for (const item of data) {
-      this.addBook(new Book(item.title, item.author));
+      this.addBook(new Book(item.title, item.author))
     }
   }
 }
 
 interface BookDataAdapter {
-  import(data: string): void;
+  import(data: string): void
 }
 
 export class CsvBookAdapter implements BookDataAdapter {
-  private catalog: LibraryCatalog;
+  private catalog: LibraryCatalog
 
   constructor(catalog: LibraryCatalog) {
-    this.catalog = catalog;
+    this.catalog = catalog
   }
 
   import(csvData: string) {
-    const data = csvData.split("\n").slice(1);
+    const data = csvData.split('\n').slice(1)
     for (const item of data) {
-      const [title, author] = item.split(",");
-      this.catalog.addBook(new Book(title, author));
+      const [title, author] = item.split(',')
+      this.catalog.addBook(new Book(title, author))
     }
   }
 }
 
 export class XmlBookAdapter implements BookDataAdapter {
-  private catalog: LibraryCatalog;
+  private catalog: LibraryCatalog
 
   constructor(catalog: LibraryCatalog) {
-    this.catalog = catalog;
+    this.catalog = catalog
   }
 
   import(xmlData: string) {
-    const parser = new XMLParser();
-    const jObj = parser.parse(xmlData);
-    const books = jObj.books.book;
+    const parser = new XMLParser()
+    const jObj = parser.parse(xmlData)
+    const books = jObj.books.book
     for (const book of books) {
-      this.catalog.addBook(new Book(book.title, book.author));
+      this.catalog.addBook(new Book(book.title, book.author))
     }
   }
 }
