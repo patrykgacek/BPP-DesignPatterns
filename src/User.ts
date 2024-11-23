@@ -1,4 +1,7 @@
-class User {
+import type { EventListener } from './Event'
+import type { Book } from './LibraryCatalog'
+
+class User implements EventListener {
   firstname: string
   lastname: string
   maxBooksAllowed: number // How many books can be borrowed at the same time
@@ -12,6 +15,12 @@ class User {
   sayHi() {
     console.log(
       `Hi, my name is ${this.firstname} ${this.lastname}, I'm a ${this.constructor.name} and I can borrow ${this.maxBooksAllowed} books at the same time.`
+    )
+  }
+
+  update(event: string, book: Book) {
+    console.log(
+      `${this.constructor.name} ${this.firstname} ${this.lastname} received an event: ${event}, book: ${book.title}`
     )
   }
 }

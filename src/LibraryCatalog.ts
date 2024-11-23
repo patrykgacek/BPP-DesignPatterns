@@ -1,5 +1,7 @@
 import { XMLParser } from 'fast-xml-parser'
 
+import { EventManager } from './Event'
+
 export class Book {
   constructor(
     public title: string,
@@ -14,6 +16,7 @@ export class Book {
 export class LibraryCatalog {
   private static instance: LibraryCatalog
   private books: Book[] = []
+  public eventManager: EventManager = new EventManager()
 
   private constructor() {}
 
@@ -30,6 +33,19 @@ export class LibraryCatalog {
 
   addBook(book: Book) {
     this.books.push(book)
+    console.log(`Book: "${book.title}" added to the catalog`)
+    this.eventManager.notify('borrow', book)
+  }
+
+  removeBook(book: Book) {
+    const index = this.books.indexOf(book)
+    if (index > -1) {
+      this.books.splice(index, 1)
+      console.log(`Book: "${book.title}" removed from the catalog`)
+      this.eventManager.notify('return', book)
+    } else {
+      console.log('Book not found')
+    }
   }
 
   printBooks() {
